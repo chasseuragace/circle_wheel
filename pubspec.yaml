@@ -1,6 +1,6 @@
 name: circle_wheel
 description: "A highly customizable circular wheel widget for Flutter that supports 360-degree rotation, multiple hotspots, smooth animations, and rich interaction options. Perfect for radial menus, selection wheels, and interactive circular layouts."
-version: 0.0.1
+version: 0.0.1+2
 homepage: https://github.com/swuhalee/circle_wheel
 
 environment:

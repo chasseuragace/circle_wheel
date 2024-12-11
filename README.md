@@ -11,7 +11,7 @@ Flutter에서 아름답고 상호작용이 가능한 방사형 레이아웃을 �
 
 ## Examples / 예제
 
-![Circle Wheel Example 1](images/example1.png)|![Circle Wheel Example 2](images/example2.png)|![Circle Wheel Example 3](images/example3.png)
+![Circle Wheel Example 1](https://raw.githubusercontent.com/swuhalee/circle_wheel/main/images/example1.png)|![Circle Wheel Example 2](https://raw.githubusercontent.com/swuhalee/circle_wheel/main/images/example2.png)|![Circle Wheel Example 3](https://raw.githubusercontent.com/swuhalee/circle_wheel/main/images/example3.png)
 |---|---|---|
 
 
@@ -68,7 +68,7 @@ pubspec.yaml에 circle_wheel을 추가하세요:
 
 ```yaml
 dependencies:
-  circle_wheel: ^0.1.0
+  circle_wheel: 0.0.1+2
 ```
 
 ## Basic Usage / 기본 사용법
@@ -160,29 +160,3 @@ CircleWheel(
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 열심히 만들었습니다만... 안되는 부분이 있거나 추가하고 싶은 기능이 있다면 pr 또는 이슈를 올려주세요! 코드 리뷰도 환영합니다... (초보예요)
-
-## License / 라이선스
-
-```
-MIT License
-
-Copyright (c) 2024 Your Name
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.1+2
+
+- Updated README
+
+## 0.0.1+1
+
+- Updated README
+
 ## 0.0.1
 
 - Basic circular wheel implementation
