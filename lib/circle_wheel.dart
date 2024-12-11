@@ -1,69 +1,3 @@
-/// CircleWheel Widget Documentation
-/// CircleWheel 위젯 문서
-///
-/// This widget creates a circular/radial layout that can display items in a wheel formation.
-/// 이 위젯은 아이템들을 휠 형태로 표시할 수 있는 원형/방사형 레이아웃을 생성합니다.
-///
-/// Features (기능):
-/// 1. 360-degree rotation support (360도 회전 지원)
-/// 2. Multiple hotspot detection (다중 핫스팟 감지)
-/// 3. Customizable animations (커스터마이징 가능한 애니메이션)
-/// 4. Gesture-based interaction (제스처 기반 상호작용)
-/// 5. Auto-rotation capability (자동 회전 기능)
-///
-/// Main Options (주요 옵션):
-/// 1. Layout Options (레이아웃 옵션)
-///    - radius: Wheel radius (휠 반지름)
-///    - spacing: Space between items (아이템 간 간격)
-///    - innerRadius: Optional inner radius for ring layout (링 레이아웃을 위한 내부 반지름)
-///    - startAngle/endAngle: Control wheel's angular span (휠의 각도 범위 제어)
-///
-/// 2. Interaction Options (상호작용 옵션)
-///    - canRotate: Enable/disable rotation (회전 활성화/비활성화)
-///    - snapToHotspot: Snap items to hotspots (아이템을 핫스팟에 스냅)
-///    - rotationResistance: Control rotation sensitivity (회전 감도 제어)
-///    - bounceBack: Enable bounce effect (바운스 효과 활성화)
-///
-/// 3. Animation Options (애니메이션 옵션)
-///    - rotationDuration: Duration of rotation animation (회전 애니메이션 지속 시간)
-///    - rotationCurve: Animation curve type (애니메이션 곡선 유형)
-///    - autoRotate: Enable automatic rotation (자동 회전 활성화)
-///    - autoRotateSpeed: Speed of auto-rotation (자동 회전 속도)
-///
-/// 4. Hotspot Options (핫스팟 옵션)
-///    - hotspotAngle: Angle for hotspot detection (핫스팟 감지 각도)
-///    - hotspotRange: Active range around hotspot (핫스팟 주변 활성 범위)
-///    - multipleHotspots: Additional hotspot angles (추가 핫스팟 각도)
-///
-/// 5. Styling Options (스타일링 옵션)
-///    - itemScale: Base scale of items (아이템 기본 크기)
-///    - hotspotScale: Scale of items in hotspot (핫스팟에 있는 아이템 크기)
-///    - itemAlignment: Item alignment in container (컨테이너 내 아이템 정렬)
-///    - itemPadding: Padding around items (아이템 주변 패딩)
-///
-/// 6. Performance Options (성능 옵션)
-///    - preloadItems: Enable item preloading (아이템 미리 로드)
-///    - cacheItems: Enable item caching (아이템 캐싱)
-///    - renderOnlyVisible: Render only visible items (보이는 아이템만 렌더링)
-///
-/// Events & Callbacks (이벤트 & 콜백):
-/// - onItemEnterHotspot: Called when item enters hotspot (아이템이 핫스팟에 진입할 때 호출)
-/// - onItemExitHotspot: Called when item exits hotspot (아이템이 핫스팟에서 나갈 때 호출)
-/// - onRotationComplete: Called after rotation ends (회전이 끝난 후 호출)
-/// - onItemSelected: Called when item is selected (아이템이 선택됐을 때 호출)
-///
-/// Usage Example (사용 예시):
-/// ```dart
-/// CircleWheel(
-///   itemBuilder: (index, isAtHotspot) => YourItemWidget(),
-///   itemCount: 10,
-///   radius: 150,
-///   canRotate: true,
-///   hotspotAngle: math.pi / 2,
-///   autoRotate: false,
-/// )
-/// ```
-
 library circle_wheel;
 
 import 'package:flutter/material.dart';
@@ -138,11 +72,6 @@ class CircleWheel extends StatefulWidget {
   /// Speed of auto-rotation (when enabled)
   /// 자동 회전 속도 (활성화된 경우)
   final double autoRotateSpeed;
-
-  // Layout options
-  /// Spacing between items
-  /// 아이템 간의 간격
-  final double spacing;
 
   /// Starting angle of the wheel (in radians)
   /// 휠의 시작 각도 (라디안)
@@ -220,15 +149,6 @@ class CircleWheel extends StatefulWidget {
   /// 햅틱 피드백을 제공할지 여부
   final bool hapticFeedback;
 
-  // Performance options
-  /// Whether to preload items
-  /// 아이템을 미리 로드할지 여부
-  final bool preloadItems;
-
-  /// Whether to cache rendered items
-  /// 렌더링된 아이템을 캐시할지 여부
-  final bool cacheItems;
-
   /// Whether to only render visible items
   /// 보이는 아이템만 렌더링할지 여부
   final bool renderOnlyVisible;
@@ -262,7 +182,6 @@ class CircleWheel extends StatefulWidget {
     this.autoRotateSpeed = 1.0,
 
     // Layout options
-    this.spacing = 0,
     this.startAngle = 0,
     this.endAngle,
     this.innerRadius,
@@ -291,18 +210,16 @@ class CircleWheel extends StatefulWidget {
     this.hapticFeedback = true,
 
     // Performance options
-    this.preloadItems = false,
-    this.cacheItems = true,
     this.renderOnlyVisible = true,
     this.visibilityStartAngle,
     this.visibilityEndAngle,
   });
 
   @override
-  State<CircleWheel> createState() => _CircleWheelState();
+  State<CircleWheel> createState() => CircleWheelState();
 }
 
-class _CircleWheelState extends State<CircleWheel>
+class CircleWheelState extends State<CircleWheel>
     with SingleTickerProviderStateMixin {
   /// Current rotation value of the wheel
   /// 휠의 현재 회전 값
@@ -379,19 +296,44 @@ class _CircleWheelState extends State<CircleWheel>
   /// Checks if an item is in a hotspot
   /// 아이템이 핫스팟에 있는지 확인합니다.
   bool _isInHotspot(double angle) {
-    if (widget.hotspotAngle == null)
-      return false; // No hotspot if angle is null
+    if (widget.hotspotAngle == null &&
+        (widget.multipleHotspots == null || widget.multipleHotspots!.isEmpty)) {
+      return false;
+    }
 
-    final normalizedAngle = (angle % (2 * math.pi));
-    final normalizedHotspotAngle = (widget.hotspotAngle! % (2 * math.pi));
+    // 현재 회전값을 고려한 실제 각도 계산
+    final actualAngle = (angle + _rotationValue) % (2 * math.pi);
 
-    final difference = (normalizedAngle - normalizedHotspotAngle).abs();
-    final wrappedDifference = math.min(
-      difference,
-      2 * math.pi - difference,
-    );
+    // 검사할 핫스팟 각도들 목록 생성
+    List<double> hotspotAngles = [];
+    if (widget.hotspotAngle != null) {
+      hotspotAngles.add(widget.hotspotAngle!);
+    }
+    if (widget.multipleHotspots != null) {
+      hotspotAngles.addAll(widget.multipleHotspots!);
+    }
 
-    return wrappedDifference <= widget.hotspotRange;
+    // 각 핫스팟에 대해 검사
+    for (double hotspotAngle in hotspotAngles) {
+      // 핫스팟 각도를 0~2π 범위로 정규화
+      final normalizedHotspotAngle = hotspotAngle % (2 * math.pi);
+
+      // 각도 차이 계산 (회전값 고려)
+      final difference = (actualAngle - normalizedHotspotAngle).abs();
+
+      // 360도를 고려한 최소 각도 차이 계산
+      final wrappedDifference = math.min(
+        difference,
+        2 * math.pi - difference,
+      );
+
+      // 하나의 핫스팟이라도 범위 내에 있으면 true 반환
+      if (wrappedDifference <= widget.hotspotRange) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   /// Handles hotspot state changes and triggers callbacks
@@ -479,6 +421,21 @@ class _CircleWheelState extends State<CircleWheel>
     }
   }
 
+  /// Sets the rotation value to move a specific item to the hotspot
+  /// 특정 아이템을 핫스팟으로 이동시키기 위해 회전 값을 설정합니다.
+  void setRotation(int index) {
+    final itemAngle = widget.startAngle +
+        (index *
+            ((widget.endAngle ?? (2 * math.pi)) - widget.startAngle) /
+            widget.itemCount);
+    final targetRotation =
+        widget.hotspotAngle != null ? widget.hotspotAngle! - itemAngle : 0.0;
+
+    setState(() {
+      _rotationValue = targetRotation;
+    });
+  }
+
   @override
   void dispose() {
     _rotationController.dispose();
@@ -523,49 +480,30 @@ class _CircleWheelState extends State<CircleWheel>
     double normalizedAngle = (angle + _rotationValue) % (2 * math.pi);
     if (normalizedAngle < 0) normalizedAngle += 2 * math.pi;
 
-    // 화면 크기 가져오기
-    final RenderBox? renderBox = context.findRenderObject() as RenderBox?;
-    if (renderBox == null) return true;
+    // renderOnlyVisible이 false면 항상 보이도록 처리
+    if (!widget.renderOnlyVisible) return true;
 
-    // 부모 위젯(Scaffold)의 크기 가져오기
-    final RenderBox? parentBox = context
-        .findRootAncestorStateOfType<ScaffoldState>()
-        ?.context
-        .findRenderObject() as RenderBox?;
-    if (parentBox == null) return true;
-
-    // CircleWheel의 중심점 위치를 전역 좌표로 변환
-    final Offset centerGlobal = renderBox.localToGlobal(Offset.zero);
-
-    // 아이템의 상대 위치 계산 (중심점만 고려)
-    final double itemX = widget.radius * math.cos(normalizedAngle);
-    final double itemY = widget.radius * math.sin(normalizedAngle);
-
-    // 아이템의 중심점 위치 계산
-    final double globalX = centerGlobal.dx + itemX;
-    final double globalY = centerGlobal.dy + itemY;
-
-    if (widget.renderOnlyVisible &&
-        widget.visibilityStartAngle != null &&
-        widget.visibilityEndAngle != null) {
-      final startAngle = widget.visibilityStartAngle! % (2 * math.pi);
-      final endAngle = widget.visibilityEndAngle! % (2 * math.pi);
-
-      // 시작 각도가 끝 각도보다 작은 경우 (예: 0 -> π)
-      if (startAngle <= endAngle) {
-        final isBetweenAngles =
-            normalizedAngle >= startAngle && normalizedAngle <= endAngle;
-        return isBetweenAngles;
-      }
-      // 시작 각도가 끝 각도보다 큰 경우 (예: π -> 0)
-      else {
-        final isBetweenAngles =
-            normalizedAngle >= startAngle || normalizedAngle <= endAngle;
-        return isBetweenAngles;
-      }
+    // visibilityStartAngle과 visibilityEndAngle이 설정되지 않았다면 보이도록 처리
+    if (widget.visibilityStartAngle == null ||
+        widget.visibilityEndAngle == null) {
+      return true;
     }
 
-    return false;
+    // 시작과 끝 각도 정규화
+    double startAngle = widget.visibilityStartAngle! % (2 * math.pi);
+    if (startAngle < 0) startAngle += 2 * math.pi;
+
+    double endAngle = widget.visibilityEndAngle! % (2 * math.pi);
+    if (endAngle < 0) endAngle += 2 * math.pi;
+
+    // 시작 각도가 끝 각도보다 작은 경우 (예: 0 -> π)
+    if (startAngle <= endAngle) {
+      return normalizedAngle >= startAngle && normalizedAngle <= endAngle;
+    }
+    // 시작 각도가 끝 각도보다 큰 경우 (예: π -> 0)
+    else {
+      return normalizedAngle >= startAngle || normalizedAngle <= endAngle;
+    }
   }
 
   /// Builds an individual item in the wheel

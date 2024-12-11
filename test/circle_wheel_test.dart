@@ -18,7 +18,6 @@ void main() {
             hotspotRange: math.pi / 6,
             rotationDuration: Duration(milliseconds: 300),
             rotationCurve: Curves.easeInOut,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -46,42 +45,74 @@ void main() {
             canRotate: true,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
       );
 
-      expect(find.byType(Container), findsWidgets);
+      expect(find.text('Item 0'), findsOneWidget);
+      expect(find.text('Item 8'), findsNothing);
     });
 
-    testWidgets('Hotspot functionality test', (WidgetTester tester) async {
+    testWidgets('Hotspot detection test', (WidgetTester tester) async {
       bool hotspotEntered = false;
+      bool hotspotExited = false;
+
       await tester.pumpWidget(
         MaterialApp(
           home: CircleWheel(
             itemCount: 8,
             radius: 100,
+            itemBuilder: (index, isAtHotspot) => Text('Item $index'),
+            rotation: RadialRotation.none,
+            canRotate: true,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
             onItemEnterHotspot: (index) {
               hotspotEntered = true;
             },
-            itemBuilder: (index, isAtHotspot) => Text('Item $index'),
-            rotation: RadialRotation.none,
-            canRotate: true,
-            spacing: 0.5,
+            onItemExitHotspot: (index) {
+              hotspotExited = true;
+            },
             startAngle: 0,
           ),
         ),
       );
 
-      // Simulate rotation to trigger hotspot
       final gesture = await tester.startGesture(const Offset(100, 100));
       await gesture.moveBy(const Offset(50, 0));
       await tester.pump();
-      
+
       expect(hotspotEntered, true);
+      expect(hotspotExited, false);
+    });
+
+    testWidgets('Multiple hotspots test', (WidgetTester tester) async {
+      List<int> enteredHotspots = [];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: CircleWheel(
+            itemCount: 8,
+            radius: 100,
+            multipleHotspots: [math.pi / 2, math.pi, 3 * math.pi / 2],
+            hotspotRange: math.pi / 6,
+            itemBuilder: (index, isAtHotspot) => Text('Item $index'),
+            rotation: RadialRotation.none,
+            canRotate: true,
+            onItemEnterHotspot: (index) {
+              enteredHotspots.add(index);
+            },
+            startAngle: 0,
+          ),
+        ),
+      );
+
+      final gesture = await tester.startGesture(const Offset(100, 100));
+      await gesture.moveBy(const Offset(50, 0));
+      await tester.pump();
+
+      expect(enteredHotspots.isNotEmpty, true);
     });
 
     testWidgets('Rotation test', (WidgetTester tester) async {
@@ -96,7 +127,6 @@ void main() {
             rotation: RadialRotation.none,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -120,7 +150,6 @@ void main() {
             canRotate: true,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -145,7 +174,6 @@ void main() {
             rotation: RadialRotation.none,
             canRotate: true,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -167,7 +195,6 @@ void main() {
             canRotate: true,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -193,7 +220,6 @@ void main() {
             rotation: RadialRotation.none,
             canRotate: true,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
@@ -206,42 +232,18 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('Multiple hotspots test', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: CircleWheel(
-            itemCount: 8,
-            radius: 100,
-            multipleHotspots: [math.pi/2, math.pi, 3*math.pi/2],
-            hotspotAngle: math.pi / 2,
-            itemBuilder: (index, isAtHotspot) => Text('Item $index'),
-            rotation: RadialRotation.none,
-            canRotate: true,
-            hotspotRange: math.pi / 6,
-            spacing: 0.5,
-            startAngle: 0,
-          ),
-        ),
-      );
-
-      expect(find.byType(Transform), findsWidgets);
-    });
-
     testWidgets('Performance options test', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: CircleWheel(
             itemCount: 8,
             radius: 100,
-            preloadItems: true,
-            cacheItems: true,
             renderOnlyVisible: true,
             itemBuilder: (index, isAtHotspot) => Text('Item $index'),
             rotation: RadialRotation.none,
             canRotate: true,
             hotspotAngle: math.pi / 2,
             hotspotRange: math.pi / 6,
-            spacing: 0.5,
             startAngle: 0,
           ),
         ),
